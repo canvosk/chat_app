@@ -5,21 +5,27 @@ import 'package:chat_app/views/components/inputs.dart';
 import 'package:chat_app/views/components/text.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
 
   String _email = "";
   String _pass = "";
+  String _name = "";
+  String _username = "";
 
-  FocusNode _passFocus = FocusNode();
+  final FocusNode _usernameFocus = FocusNode();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +42,47 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 25),
                   child: const Text(
-                    "Login",
+                    "Register",
                     style: loginText,
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.all(0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: nameController..text = _name,
+                          onChanged: (value) {
+                            _name = value;
+                          },
+                          onSubmitted: (value) {
+                            _usernameFocus.requestFocus();
+                          },
+                          enabled: true,
+                          decoration: nameDec,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          focusNode: _usernameFocus,
+                          controller: usernameController..text = _username,
+                          onChanged: (value) {
+                            _username = value;
+                          },
+                          onSubmitted: (value) {
+                            _emailFocus.requestFocus();
+                          },
+                          enabled: true,
+                          decoration: usernameDec,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 TextField(
-                  controller: _emailController..text = _email,
+                  focusNode: _emailFocus,
+                  controller: emailController..text = _email,
                   onChanged: (value) {
                     _email = value;
                   },
@@ -52,10 +93,6 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: emailDec,
                 ),
                 TextField(
-                  controller: _passController..text = _pass,
-                  onChanged: (value) {
-                    _pass = value;
-                  },
                   focusNode: _passFocus,
                   enabled: true,
                   decoration: passDec,
@@ -63,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    log("email: " + _emailController.text);
+                    log("email: " + emailController.text);
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 12),
@@ -72,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: loginButton,
                     child: const Center(
                       child: Text(
-                        "Login",
+                        "Register",
                         style: loginButtonText,
                       ),
                     ),
@@ -92,9 +129,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "register-page");
+                            Navigator.pop(context);
                           },
-                          child: const Text("Create an account."))
+                          child: const Text("Log In."))
                     ],
                   ),
                 )
