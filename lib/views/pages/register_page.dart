@@ -121,13 +121,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           email: _email,
                           password: _pass,
                         );
-
-                    _auth.createUser(
-                      name: _name,
-                      username: _username,
-                      email: _email,
-                      password: _pass,
-                    );
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 12),

@@ -56,20 +56,3 @@ class AuthenticationWrapper extends StatelessWidget {
     return const LoginPage();
   }
 }
-
-
-// return MaterialApp(
-//       theme: ThemeData(
-//         textTheme: GoogleFonts.varelaRoundTextTheme(
-//           Theme.of(context).textTheme,
-//         ),
-//       ),
-//       debugShowCheckedModeBanner: false,
-//       title: 'Chat App',
-//       initialRoute: "/",
-//       routes: {
-//         "/": (context) => const LoginPage(),
-//         "home-page": (context) => const HomePage(),
-//         "register-page": (context) => const RegisterPage(),
-//       },
-//     );

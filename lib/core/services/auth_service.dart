@@ -46,8 +46,8 @@ class AuthService {
         'email': email,
         'password': password,
       });
-
-      return "Signed in";
+      //signIn(email, password);
+      return "Signed up";
     } on FirebaseAuthException catch (e) {
       log(e.message.toString());
       return e.message.toString();
