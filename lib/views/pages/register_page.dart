@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/views/components/buttons.dart';
 import 'package:chat_app/views/components/inputs.dart';
 import 'package:chat_app/views/components/text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -26,6 +29,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final FocusNode _usernameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
+
+  final AuthService _auth = AuthService(FirebaseAuth.instance);
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +100,34 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextField(
                   focusNode: _passFocus,
                   enabled: true,
+                  onChanged: (value) {
+                    _pass = value;
+                  },
+                  onSubmitted: (value) {
+                    _auth.createUser(
+                        name: _name,
+                        username: _username,
+                        email: _email,
+                        password: _pass);
+                  },
                   decoration: passDec,
                   obscureText: true,
                 ),
                 GestureDetector(
                   onTap: () {
-                    log("email: " + emailController.text);
+                    context.read<AuthService>().createUser(
+                          name: _name,
+                          username: _username,
+                          email: _email,
+                          password: _pass,
+                        );
+
+                    _auth.createUser(
+                      name: _name,
+                      username: _username,
+                      email: _email,
+                      password: _pass,
+                    );
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 12),

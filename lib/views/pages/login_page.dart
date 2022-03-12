@@ -1,9 +1,13 @@
 import 'dart:developer';
 
+import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/views/components/buttons.dart';
 import 'package:chat_app/views/components/inputs.dart';
 import 'package:chat_app/views/components/text.dart';
+import 'package:chat_app/views/pages/register_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -23,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService _authService = AuthService(FirebaseAuth.instance);
+
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -63,7 +69,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    log("email: " + _emailController.text);
+                    log("clicked");
+                    context.read<AuthService>().signIn(
+                          _email.trim(),
+                          _pass.trim(),
+                        );
+
+                    // _authService.signIn(_email, _pass).then(
+                    //     (value) => Navigator.pushNamed(context, "home-page"));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 12),
@@ -92,7 +105,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "register-page");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterPage()),
+                            );
                           },
                           child: const Text("Create an account."))
                     ],
