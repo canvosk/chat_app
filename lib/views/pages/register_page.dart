@@ -104,23 +104,27 @@ class _RegisterPageState extends State<RegisterPage> {
                     _pass = value;
                   },
                   onSubmitted: (value) {
-                    _auth.createUser(
-                        name: _name,
-                        username: _username,
-                        email: _email,
-                        password: _pass);
-                  },
-                  decoration: passDec,
-                  obscureText: true,
-                ),
-                GestureDetector(
-                  onTap: () {
                     context.read<AuthService>().createUser(
                           name: _name,
                           username: _username,
                           email: _email,
                           password: _pass,
                         );
+                  },
+                  decoration: passDec,
+                  obscureText: true,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<AuthService>()
+                        .createUser(
+                          name: _name.trim(),
+                          username: _username.trim(),
+                          email: _email.trim(),
+                          password: _pass.trim(),
+                        )
+                        .then((value) => Navigator.pop(context));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 12),

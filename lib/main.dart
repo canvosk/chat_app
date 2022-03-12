@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: "Chat App",
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           textTheme: GoogleFonts.varelaRoundTextTheme(
             Theme.of(context).textTheme,
