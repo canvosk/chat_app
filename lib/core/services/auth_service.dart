@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:chat_app/core/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,27 +11,41 @@ class AuthService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  //final user.User userModel;
 
   Stream<User?> get authStateChanges => _auth.idTokenChanges();
 
-  Future<Map<String, dynamic>> getCurrentUser() async {
+  Future<Users?> getCurrentUser() async {
     CollectionReference _ref = _firestore.collection('users');
-    final User? user = _auth.currentUser;
-    final userId = user!.uid;
-    Map<String, dynamic> _currentUser = {};
+    final User? _user = _auth.currentUser;
+    final userId = _user!.uid;
 
-    _ref.doc(userId).get().then((value) {
-      var x = value.data();
-      _currentUser = {
-        'userId': userId,
-        'name': (x as Map)['name'],
-        'username': x['username'],
-        'email': x['email'],
-        'password': x['password'],
-      };
-    });
-    log(_currentUser.toString());
-    return _currentUser;
+    final docUser = _ref.doc(userId);
+    final snapshot = await docUser.get();
+
+    if (snapshot.exists) {
+      return Users.fromJson(snapshot.data() as Map<String, dynamic>);
+    } else {
+      return Users.fromJson(snapshot.data() as Map<String, dynamic>);
+    }
+
+    // try {
+    //   _ref.doc(userId).get().then((value) {
+    //     var x = value.data();
+    //     _currentUser = {
+    //       'userId': userId,
+    //       'name': (x as Map)['name'],
+    //       'username': x['username'],
+    //       'email': x['email'],
+    //       'password': x['password'],
+    //     };
+    //   });
+    //   log(_currentUser.toString());
+    //   return _currentUser;
+    // } catch (e) {
+    //   log(e.toString());
+    //   return _currentUser;
+    // }
   }
 
   Future<String?> signIn(String email, String password) async {
@@ -65,14 +80,6 @@ class AuthService {
         'password': password,
       };
       _firestore.collection('users').doc(uid).set(_toAdd);
-
-      // users.add({
-      //   'userId': uid,
-      //   'name': name,
-      //   'username': username,
-      //   'email': email,
-      //   'password': password,
-      // });
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       log(e.message.toString());
