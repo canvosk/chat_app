@@ -1,4 +1,5 @@
 import 'package:chat_app/core/services/auth_service.dart';
+import 'package:chat_app/core/viewmodels/user_model.dart';
 import 'package:chat_app/views/pages/home_page.dart';
 import 'package:chat_app/views/pages/login_page.dart';
 import 'package:chat_app/views/pages/register_page.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => UserModelState()),
         Provider<AuthService>(
           create: (_) => AuthService(FirebaseAuth.instance),
         ),

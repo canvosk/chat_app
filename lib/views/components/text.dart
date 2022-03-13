@@ -6,6 +6,12 @@ const TextStyle loginText = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+const TextStyle headerText = TextStyle(
+  color: Color(0xFF191B32),
+  fontSize: 35,
+  fontWeight: FontWeight.w600,
+);
+
 const TextStyle loginButtonText = TextStyle(
   color: Colors.white,
   fontSize: 18,

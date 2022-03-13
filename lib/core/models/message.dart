@@ -1,8 +1,8 @@
 class Message {
-  int messageId;
+  String messageId;
   String content;
-  int senderId;
-  int recipientId;
+  String senderId;
+  String recipientId;
   DateTime sentTime;
 
   Message({
