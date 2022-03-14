@@ -74,9 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                           _email.trim(),
                           _pass.trim(),
                         );
-
-                    // _authService.signIn(_email, _pass).then(
-                    //     (value) => Navigator.pushNamed(context, "home-page"));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 12),

@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/core/viewmodels/user_model.dart';
+import 'package:chat_app/views/components/buttons.dart';
 import 'package:chat_app/views/components/text.dart';
+import 'package:chat_app/views/pages/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/models/user.dart';
@@ -62,11 +65,21 @@ class _HomePageState extends State<HomePage> {
                             "Messages",
                             style: headerText,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              context.read<AuthService>().signOut();
-                            },
-                            icon: const Icon(Icons.exit_to_app_rounded),
+                          Container(
+                            margin: const EdgeInsets.all(0),
+                            decoration: profileButton,
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProfilePage()),
+                                );
+                              },
+                              color: Colors.white,
+                              icon: const FaIcon(FontAwesomeIcons.user),
+                            ),
                           ),
                         ],
                       ),
@@ -83,13 +96,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-// currentUser.first.name
-
-// ElevatedButton(
-//                 onPressed: () {
-//                   context.read<AuthService>().signOut();
-//                 },
-//                 child: const Text("SIGN OUT"),
-//               ),
