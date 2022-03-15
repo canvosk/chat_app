@@ -16,6 +16,24 @@ class UserModelState with ChangeNotifier {
     //return currentUser;
   }
 
+  Future<void> updateUser({
+    required String uid,
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    await _auth.updateUser(
+      uid: uid,
+      name: name,
+      username: username,
+      email: email,
+      password: password,
+    );
+
+    notifyListeners();
+  }
+
   getMessage() async {
     // Message _newMessage;
     // await _auth.getMessage();

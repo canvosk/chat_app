@@ -12,7 +12,7 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   //final user.User userModel;
-
+  Users? _currentUser;
   Stream<User?> get authStateChanges => _auth.idTokenChanges();
 
   Future<Users?> getCurrentUser() async {
@@ -24,28 +24,12 @@ class AuthService {
     final snapshot = await docUser.get();
 
     if (snapshot.exists) {
+      _currentUser = Users.fromJson(snapshot.data() as Map<String, dynamic>);
       return Users.fromJson(snapshot.data() as Map<String, dynamic>);
     } else {
+      _currentUser = Users.fromJson(snapshot.data() as Map<String, dynamic>);
       return Users.fromJson(snapshot.data() as Map<String, dynamic>);
     }
-
-    // try {
-    //   _ref.doc(userId).get().then((value) {
-    //     var x = value.data();
-    //     _currentUser = {
-    //       'userId': userId,
-    //       'name': (x as Map)['name'],
-    //       'username': x['username'],
-    //       'email': x['email'],
-    //       'password': x['password'],
-    //     };
-    //   });
-    //   log(_currentUser.toString());
-    //   return _currentUser;
-    // } catch (e) {
-    //   log(e.toString());
-    //   return _currentUser;
-    // }
   }
 
   Future<String?> signIn(String email, String password) async {
@@ -87,19 +71,21 @@ class AuthService {
     }
   }
 
-  // Future<List<Object>> getMessage() async {
-  //   CollectionReference _message = _firestore.collection('messages');
-  //   List<Object> _messageList = [];
-  //   try {
-  //     await _message.get().then((x) {
-  //       x.docs.forEach((element) {
-  //         _messageList.add(element.data);
-  //       });
-  //     });
-  //     return _messageList;
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return _messageList;
-  //   }
-  // }
+  Future<void> updateUser({
+    required String uid,
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    CollectionReference _ref = _firestore.collection('users');
+    Map<String, dynamic> _toUpdate = {
+      'userId': uid,
+      'name': name,
+      'username': username,
+      'email': email,
+      'password': password,
+    };
+    await _ref.doc(uid).set(_toUpdate);
+  }
 }

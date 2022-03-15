@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/core/viewmodels/user_model.dart';
+import 'package:chat_app/views/components/inputs.dart';
 import 'package:chat_app/views/components/text.dart';
 import 'package:chat_app/views/widgets/profile_page_widgets.dart';
 import 'package:chat_app/views/widgets/widgets.dart';
@@ -22,8 +23,15 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isLoading = false;
   bool isEditing = false;
 
+  late String uid;
   late String name;
   late String username;
+  late String email;
+  late String password;
+  String imageUrl =
+      "https://firebasestorage.googleapis.com/v0/b/chat-app-7d6cc.appspot.com/o/nonprofile.png?alt=media&token=c0d3ef51-7921-4379-a56c-64c6a4356f55";
+
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
@@ -38,8 +46,11 @@ class _ProfilePageState extends State<ProfilePage> {
     await _model.getCurrentUser();
     setState(() {
       isLoading = !isLoading;
+      uid = _model.currentUser!.userId;
       name = _model.currentUser!.name;
       username = _model.currentUser!.username;
+      email = _model.currentUser!.email;
+      password = _model.currentUser!.password;
     });
   }
 
@@ -151,13 +162,55 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
+                              Center(
+                                child: Container(
+                                  margin: const EdgeInsets.all(0),
+                                  width: 200,
+                                  height: 200,
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      imageUrl,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 25),
                               isEditing
-                                  ? EditProfile(name: name, username: username)
-                                  : ShowProfile(
-                                      imageUrl:
-                                          "https://firebasestorage.googleapis.com/v0/b/chat-app-7d6cc.appspot.com/o/nonprofile.png?alt=media&token=c0d3ef51-7921-4379-a56c-64c6a4356f55",
-                                      name: name,
-                                      username: username),
+                                  ? Center(
+                                      child: Expanded(
+                                        child: TextField(
+                                          textAlign: TextAlign.center,
+                                          controller: _nameController
+                                            ..text = name,
+                                          onChanged: (value) {
+                                            name = value;
+                                          },
+                                          onSubmitted: (value) async {
+                                            await _model.updateUser(
+                                              uid: uid,
+                                              name: value,
+                                              username: username,
+                                              email: email,
+                                              password: password,
+                                            );
+                                          },
+                                          decoration: nameTextField,
+                                          style: editNameText,
+                                        ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        name,
+                                        style: nameText,
+                                      ),
+                                    ),
+                              Center(
+                                child: Text(
+                                  "@" + username,
+                                  style: usernameText,
+                                ),
+                              ),
                             ],
                           ),
                   ),
