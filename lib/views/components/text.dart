@@ -18,6 +18,12 @@ const TextStyle nameText = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+const TextStyle editNameText = TextStyle(
+  color: Color(0xFF191B32),
+  fontSize: 40,
+  fontWeight: FontWeight.w600,
+);
+
 const TextStyle usernameText = TextStyle(
     //color: Color(0xFF191B32),
     fontSize: 15,

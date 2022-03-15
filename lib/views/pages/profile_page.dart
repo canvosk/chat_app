@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/core/viewmodels/user_model.dart';
 import 'package:chat_app/views/components/text.dart';
+import 'package:chat_app/views/widgets/profile_page_widgets.dart';
 import 'package:chat_app/views/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final AuthService _auth = AuthService(FirebaseAuth.instance);
   final UserModelState _model = UserModelState();
   bool isLoading = false;
+  bool isEditing = false;
+
+  late String name;
+  late String username;
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +38,8 @@ class _ProfilePageState extends State<ProfilePage> {
     await _model.getCurrentUser();
     setState(() {
       isLoading = !isLoading;
+      name = _model.currentUser!.name;
+      username = _model.currentUser!.username;
     });
   }
 
@@ -126,38 +134,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                     margin: const EdgeInsets.only(right: 24),
                                     child: GestureDetector(
                                       onTap: () {
-                                        log("clicked");
+                                        setState(() {
+                                          isEditing = !isEditing;
+                                        });
                                       },
-                                      child: const Icon(Icons.edit),
+                                      child: isEditing
+                                          ? const Icon(
+                                              Icons.check_rounded,
+                                              size: 24,
+                                            )
+                                          : const Icon(
+                                              Icons.edit,
+                                              size: 24,
+                                            ),
                                     ),
                                   ),
                                 ],
                               ),
-                              Center(
-                                child: Container(
-                                  margin: const EdgeInsets.all(0),
-                                  width: 200,
-                                  height: 200,
-                                  child: const CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      "https://firebasestorage.googleapis.com/v0/b/chat-app-7d6cc.appspot.com/o/nonprofile.png?alt=media&token=c0d3ef51-7921-4379-a56c-64c6a4356f55",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 25),
-                              Center(
-                                child: Text(
-                                  _model.currentUser!.name,
-                                  style: nameText,
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  "@" + _model.currentUser!.username,
-                                  style: usernameText,
-                                ),
-                              )
+                              isEditing
+                                  ? EditProfile(name: name, username: username)
+                                  : ShowProfile(
+                                      imageUrl:
+                                          "https://firebasestorage.googleapis.com/v0/b/chat-app-7d6cc.appspot.com/o/nonprofile.png?alt=media&token=c0d3ef51-7921-4379-a56c-64c6a4356f55",
+                                      name: name,
+                                      username: username),
                             ],
                           ),
                   ),

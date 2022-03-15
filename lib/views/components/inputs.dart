@@ -73,3 +73,8 @@ const InputDecoration usernameDec = InputDecoration(
   ),
   border: InputBorder.none,
 );
+
+const InputDecoration nameTextField = InputDecoration(
+    hintText: "Enter Name",
+    border: InputBorder.none,
+    contentPadding: EdgeInsets.only(left: 2, top: 0, bottom: 0));
