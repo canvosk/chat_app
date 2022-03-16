@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/core/viewmodels/user_model.dart';
+import 'package:chat_app/views/components/buttons.dart';
 import 'package:chat_app/views/components/inputs.dart';
 import 'package:chat_app/views/components/text.dart';
 import 'package:chat_app/views/widgets/profile_page_widgets.dart';
@@ -162,18 +163,52 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
-                              Center(
-                                child: Container(
-                                  margin: const EdgeInsets.all(0),
-                                  width: 200,
-                                  height: 200,
-                                  child: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      imageUrl,
+                              isEditing
+                                  ? Center(
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.all(0),
+                                            width: 200,
+                                            height: 200,
+                                            child: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                imageUrl,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            bottom: 0,
+                                            right: 15,
+                                            child: GestureDetector(
+                                              onTap: (() {
+                                                _selectImage(context);
+                                              }),
+                                              child: Container(
+                                                width: 50,
+                                                height: 50,
+                                                decoration: pickImageButton,
+                                                child: const Image(
+                                                    image: AssetImage(
+                                                        "assets/images/add_icon.png")),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Container(
+                                        margin: const EdgeInsets.all(0),
+                                        width: 200,
+                                        height: 200,
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            imageUrl,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
                               const SizedBox(height: 25),
                               isEditing
                                   ? Center(
@@ -238,5 +273,70 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
+  }
+
+  Future<dynamic> _selectImage(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          margin: const EdgeInsets.all(0),
+          child: AlertDialog(
+            title: const Text(
+              "Choose Option",
+              style: chooseImageText,
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    splashColor: Colors.purpleAccent,
+                    child: Expanded(
+                      child: Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.camera,
+                              color: Colors.purpleAccent,
+                            ),
+                          ),
+                          Text(
+                            "Take a picture",
+                            style: listText,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    splashColor: Colors.purpleAccent,
+                    child: Expanded(
+                      child: Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.image,
+                              color: Colors.purpleAccent,
+                            ),
+                          ),
+                          Text(
+                            "Choose on gallery",
+                            style: listText,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

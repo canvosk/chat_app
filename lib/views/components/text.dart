@@ -35,3 +35,13 @@ const TextStyle loginButtonText = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w600,
 );
+
+const TextStyle chooseImageText = TextStyle(
+  fontWeight: FontWeight.w600,
+  color: Color(0xFF295BE0),
+);
+
+const TextStyle listText = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);
