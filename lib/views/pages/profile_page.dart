@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:chat_app/core/services/auth_service.dart';
 import 'package:chat_app/core/viewmodels/user_model.dart';
@@ -9,6 +10,7 @@ import 'package:chat_app/views/widgets/profile_page_widgets.dart';
 import 'package:chat_app/views/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -52,6 +54,15 @@ class _ProfilePageState extends State<ProfilePage> {
       username = _model.currentUser!.username;
       email = _model.currentUser!.email;
       password = _model.currentUser!.password;
+    });
+  }
+
+  var _image;
+
+  void getImage(ImageSource source) async {
+    XFile? image = await ImagePicker().pickImage(source: source);
+    setState(() {
+      _image = File(image!.path);
     });
   }
 
@@ -167,16 +178,29 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ? Center(
                                       child: Stack(
                                         children: [
-                                          Container(
-                                            margin: const EdgeInsets.all(0),
-                                            width: 200,
-                                            height: 200,
-                                            child: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                imageUrl,
-                                              ),
-                                            ),
-                                          ),
+                                          _image == null
+                                              ? Container(
+                                                  margin:
+                                                      const EdgeInsets.all(0),
+                                                  width: 200,
+                                                  height: 200,
+                                                  child: CircleAvatar(
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                      imageUrl,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(
+                                                  margin:
+                                                      const EdgeInsets.all(0),
+                                                  width: 200,
+                                                  height: 200,
+                                                  child: CircleAvatar(
+                                                    backgroundImage:
+                                                        FileImage(_image),
+                                                  ),
+                                                ),
                                           Positioned(
                                             bottom: 0,
                                             right: 15,
@@ -290,7 +314,10 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListBody(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      getImage(ImageSource.camera);
+                      Navigator.pop(context);
+                    },
                     splashColor: Colors.purpleAccent,
                     child: Expanded(
                       child: Row(
@@ -311,7 +338,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      getImage(ImageSource.gallery);
+                      Navigator.pop(context);
+                    },
                     splashColor: Colors.purpleAccent,
                     child: Expanded(
                       child: Row(
