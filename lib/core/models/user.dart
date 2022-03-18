@@ -6,6 +6,7 @@ class Users {
   String username;
   String email;
   String password;
+  String profileUrl;
 
   Users({
     required this.userId,
@@ -13,6 +14,7 @@ class Users {
     required this.username,
     required this.email,
     required this.password,
+    required this.profileUrl,
   });
 
   Map<String, dynamic> toJson() => {
@@ -21,6 +23,7 @@ class Users {
         'username': username,
         'email': email,
         'password': password,
+        'profileUrl': profileUrl
       };
 
   static Users fromJson(Map<String, dynamic> json) => Users(
@@ -29,5 +32,6 @@ class Users {
         username: json['username'],
         email: json['email'],
         password: json['password'],
+        profileUrl: json['profileUrl'],
       );
 }

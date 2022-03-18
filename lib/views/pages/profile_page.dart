@@ -31,9 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late String username;
   late String email;
   late String password;
-  String imageUrl =
-      "https://firebasestorage.googleapis.com/v0/b/chat-app-7d6cc.appspot.com/o/nonprofile.png?alt=media&token=c0d3ef51-7921-4379-a56c-64c6a4356f55";
-
+  late String profileUrl;
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -54,6 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
       username = _model.currentUser!.username;
       email = _model.currentUser!.email;
       password = _model.currentUser!.password;
+      profileUrl = _model.currentUser!.profileUrl;
     });
   }
 
@@ -158,7 +157,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: GestureDetector(
                                       onTap: () {
                                         if (isEditing == true) {
-                                          _model.uploadImage(uid, _image);
+                                          if (_image != null) {
+                                            _model.uploadImage(uid, _image);
+                                          }
+                                          setState(() {
+                                            fetchUser();
+                                            profileUrl =
+                                                _model.currentUser!.profileUrl;
+                                          });
                                         }
 
                                         setState(() {
@@ -191,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   child: CircleAvatar(
                                                     backgroundImage:
                                                         NetworkImage(
-                                                      imageUrl,
+                                                      profileUrl,
                                                     ),
                                                   ),
                                                 )
@@ -232,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         height: 200,
                                         child: CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                            imageUrl,
+                                            profileUrl,
                                           ),
                                         ),
                                       ),

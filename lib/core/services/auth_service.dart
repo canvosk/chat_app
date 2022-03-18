@@ -62,6 +62,8 @@ class AuthService {
         'username': username,
         'email': email,
         'password': password,
+        'profileUrl':
+            "https://firebasestorage.googleapis.com/v0/b/chat-app-7d6cc.appspot.com/o/nonprofile.png?alt=media&token=c0d3ef51-7921-4379-a56c-64c6a4356f55",
       };
       _firestore.collection('users').doc(uid).set(_toAdd);
       return "Signed up";
