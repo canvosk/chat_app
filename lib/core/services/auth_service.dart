@@ -86,6 +86,13 @@ class AuthService {
       'email': email,
       'password': password,
     };
+
     await _ref.doc(uid).set(_toUpdate);
+  }
+
+  Future<void> updateProfileImage(
+      {required String uid, required String url}) async {
+    CollectionReference _ref = _firestore.collection('users');
+    await _ref.doc(uid).update({'profileUrl': url});
   }
 }

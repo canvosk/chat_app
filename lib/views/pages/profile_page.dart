@@ -157,6 +157,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     margin: const EdgeInsets.only(right: 24),
                                     child: GestureDetector(
                                       onTap: () {
+                                        if (isEditing == true) {
+                                          _model.uploadImage(uid, _image);
+                                        }
+
                                         setState(() {
                                           isEditing = !isEditing;
                                         });
